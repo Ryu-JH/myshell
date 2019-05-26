@@ -23,39 +23,24 @@
     }
     return 0;
 }*/
-
+//현재 위치를 프린트
 int pwd(void){
     char cwd[1024];
     getcwd(cwd, sizeof(cwd));
     printf("현재 위치: %s\n", cwd);
 }
-
-/*int cd(int argc, char *argv[]){
-    if(argc == 1){
-        chdir(argv[0]);
-    }
-    else if(argc == 2){
-        if(chdir(argv[1])){
-            printf("No directory\n");
-	}
-    }
-    else{
-        printf("USAGE: cd [dir]\n");
-    }	
-    return 0;
-}*/
-
+//ls명령시 파일 타입을 읽음
 void ls_type(struct stat buf){
     printf("%lo ",(unsigned long)buf.st_mode);
 }
-
+//ls명령을 구현
 int ls(void){
     char *cwd = (char *)malloc(sizeof(char)*1024);
     DIR *dir = NULL;
     struct dirent *list = NULL;
     struct stat buf;
     getcwd(cwd, 1024);
-
+	
     if((dir = opendir(cwd)) == NULL){
         printf("current directory error\n");
         exit(1);
@@ -123,25 +108,21 @@ int main(void)
 	        s = tempcommand[i];
 	        strcpy(command,s);
 	        len = strlen(command);
-	    if (command[len - 1] == '\n') {
-	        command[len - 1] = '\0';
-	    }
-	    printf("%s\n", command);    
- 
-	    /*if(strcmp("mkdir", command) == 0){
-		mkdir(args[1], 0775);
-	    }*/
-		    
-	    if(strcmp("exit", command) == 0){
-	        exit(1);
-	    }
-	    if(strcmp("ls", command) == 0){   
-		ls();
-	    }
-	    if(strcmp("pwd", command) == 0){
-		pwd();
-	    }
-    	    pid = fork();
+	        if (command[len - 1] == '\n') {
+	            command[len - 1] = '\0';
+	        }
+	        printf("%s\n", command);    
+ 	    
+		if(strcmp("exit", command) == 0){
+		    exit(1);
+	        }
+	        if(strcmp("ls", command) == 0){   
+	    	    ls();
+	        }
+	        if(strcmp("pwd", command) == 0){
+		    pwd();
+	        }
+    	        pid = fork();
 	
                 if (pid < 0) {
                     fprintf(stderr, "fork failed\n");
