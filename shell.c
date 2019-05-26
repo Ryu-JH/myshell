@@ -22,17 +22,20 @@
         return 1;
     }
     return 0;
-}*/
+}미구현*/
+
 //현재 위치를 프린트
 int pwd(void){
     char cwd[1024];
     getcwd(cwd, sizeof(cwd));
     printf("현재 위치: %s\n", cwd);
 }
+
 //ls명령시 파일 타입을 읽음
 void ls_type(struct stat buf){
     printf("%lo ",(unsigned long)buf.st_mode);
 }
+
 //ls명령을 구현
 int ls(void){
     char *cwd = (char *)malloc(sizeof(char)*1024);
@@ -86,6 +89,8 @@ int main(void)
             fprintf(stderr, "fgets failed\n");
             exit(1);
         }
+	    
+	//cd명령어를 입력한후 ls를 통해 하위 디렉토리를 확인후 원하는 디렉토리를 입력하면 그 디렉토리로 이동
 	else if(strcmp("cd\n", command) == 0){
 	    ls();
 	    char dir[MAX_LEN_LINE];
@@ -95,6 +100,7 @@ int main(void)
 	    chdir(movdir[0]);
 	    pwd();
 	}
+	    
         else{
             printf("\n명령어:%s\n/////////////////////\n", command);
 	    temp = strtok(s," ;");
@@ -112,13 +118,18 @@ int main(void)
 	            command[len - 1] = '\0';
 	        }
 	        printf("%s\n", command);    
- 	    
+                  
+		//exit 명령 실행
 		if(strcmp("exit", command) == 0){
 		    exit(1);
 	        }
+		    
+		//ls 명령 실행    
 	        if(strcmp("ls", command) == 0){   
 	    	    ls();
 	        }
+		    
+		//pwd명령 실행    
 	        if(strcmp("pwd", command) == 0){
 		    pwd();
 	        }
